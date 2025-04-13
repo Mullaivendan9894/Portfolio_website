@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Census Income Classification Project</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header Styling */
+        header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Container for Content */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px; /* Rounded corners for container */
+        }
+
+        /* Headings Styling */
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #007BFF; /* Blue color for main heading */
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333; /* Dark gray for subheadings */
+            border-bottom: 2px solid #007BFF; /* Blue underline for subheadings */
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #555; /* Slightly lighter gray for sub-subheadings */
+        }
+
+        /* Link Styling */
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Paragraph Styling */
+        p {
+            margin-bottom: 15px;
+            color: #555; /* Slightly lighter gray for paragraphs */
+        }
+
+        /* List Styling */
+        ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 5px;
+            color: #555; /* Slightly lighter gray for list items */
+        }
+
+        /* Image Styling */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto; /* Center-align images */
+            border-radius: 8px; /* Rounded corners for images */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for images */
+        }
+
+        .caption {
+            font-style: italic;
+            text-align: center;
+            color: #666;
+            margin-top: 10px; /* Space between image and caption */
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #fff;
+            border-radius: 8px; /* Rounded corners for tables */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for tables */
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Preformatted Text Styling (for classification reports) */
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "Courier New", Courier, monospace;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>Census Income Classification Project</h1>
+        <p>Income Classification Model</p>
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        <!-- Introduction Section -->
+        <section class="section" id="introduction">
+            <h2>Introduction</h2>
+            <p>
+                This project focuses on classifying income levels based on census data. The dataset used in this analysis can be found on 
+                <a href="https://www.kaggle.com/datasets/tawfikelmetwally/census-income-dataset?select=adult.csv" target="_blank">Kaggle</a>.
+            </p>
+            <h3>The Importance of Census Statistics</h3>
+            <p>
+                The census is a special, wide-range activity, which takes place once a decade in the entire country. The purpose is to gather information about the general population, in order to present a full and reliable picture of the population in the country - its housing conditions and demographic, social, and economic characteristics. The information collected includes data on age, gender, country of origin, marital status, housing conditions, marriage, education, employment, etc.
+            </p>
+            <p>
+                This information makes it possible to plan better services, improve the quality of life, and solve existing problems. Statistical information, which serves as the basis for constructing planning forecasts, is essential for the democratic process since it enables the citizens to examine the decisions made by the government and local authorities, and decide whether they serve the public they are meant to help.
+            </p>
+            <h3>Objective of the Project</h3>
+            <p>
+                The goal of this machine learning project is to predict whether a person makes over 50K a year or not given their demographic variation. To achieve this, several classification techniques are explored for the best prediction result.
+            </p>
+            <h3>Features Description</h3>
+            <h4>Numerical Features</h4>
+            <ul>
+                <li><strong>age</strong> <em>(int64)</em>: The age of an individual.</li>
+                <li><strong>fnlwgt</strong> <em>(int64)</em>: The final weight (CPS weight for population estimates).</li>
+                <li><strong>educational-num</strong> <em>(int64)</em>: The number of years of education completed.</li>
+                <li><strong>capital-gain</strong> <em>(int64)</em>: The amount of capital gain (financial profit).</li>
+                <li><strong>capital-loss</strong> <em>(int64)</em>: The amount of capital loss an individual has incurred.</li>
+                <li><strong>hours-per-week</strong> <em>(int64)</em>: The number of hours worked per week.</li>
+            </ul>
+            <h4>Categorical Features</h4>
+            <ul>
+                <li><strong>workclass</strong> <em>(object, 46043 non-null)</em>: The type of work or employment of an individual. It can have the following categories:
+                    <ul>
+                        <li><em>Private</em>: Working in the private sector.</li>
+                        <li><em>Self-emp-not-inc</em>: Self-employed individuals who are not incorporated.</li>
+                        <li><em>Self-emp-inc</em>: Self-employed individuals who are incorporated.</li>
+                        <li><em>Federal-gov</em>: Working for the federal government.</li>
+                        <li><em>Local-gov</em>: Working for the local government.</li>
+                        <li><em>State-gov</em>: Working for the state government.</li>
+                        <li><em>Without-pay</em>: Not working and without pay.</li>
+                        <li><em>Never-worked</em>: Never worked before.</li>
+                    </ul>
+                </li>
+                <li><strong>education</strong> <em>(object, 48842 non-null)</em>: The highest level of education completed.</li>
+                <li><strong>marital-status</strong> <em>(object, 48842 non-null)</em>: The marital status.</li>
+                <li><strong>occupation</strong> <em>(object, 46033 non-null)</em>: Type of work performed by an individual.</li>
+                <li><strong>relationship</strong> <em>(object, 48842 non-null)</em>: The relationship status.</li>
+                <li><strong>race</strong> <em>(object, 48842 non-null)</em>: The race of an individual.</li>
+                <li><strong>gender</strong> <em>(object, 48842 non-null)</em>: The gender of an individual.</li>
+                <li><strong>native-country</strong> <em>(object, 47985 non-null)</em>: The country of origin or the native country.</li>
+            </ul>
+            <h4>Target Variable</h4>
+            <ul>
+                <li><strong>income</strong> <em>(object, 48842 non-null)</em>: The income level of an individual, categorized as:
+                    <ul>
+                        <li><em>&lt;=50K</em>: Income less than or equal to $50,000.</li>
+                        <li><em>&gt;50K</em>: Income greater than $50,000.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <div class="container">
+
+        <!-- Chapter 1: Fetching Data, Cleaning, and Preprocessing the Data -->
+        <section class="section" id="chapter1">
+            <h2>Chapter 1: Fetching Data, Cleaning, and Preprocessing the Data</h2>
+
+            <!-- Section 1.1: Import Packages -->
+            <h3>1.1 Import Packages</h3>
+            <p>
+                The necessary Python packages were imported, including <code>numpy</code>, <code>pandas</code>, <code>seaborn</code>, and <code>matplotlib</code> for data manipulation and visualization. Warnings were suppressed to avoid clutter in the output.
+            </p>
+
+            <!-- Section 1.2: Import Data -->
+            <h3>1.2 Import Data</h3>
+            <p>
+                The dataset was loaded from the <code>adult.csv</code> file, which contains 48,842 rows and 15 columns. Missing values were represented by <code>?</code>, and leading/trailing spaces in column values were removed.
+            </p>
+            <p>
+                <strong>Dataset Shape:</strong> The dataset initially contained 48,842 rows and 15 columns.
+            </p>
+
+            <!-- Section 1.3: Checking for Null Values -->
+            <h3>1.3 Checking for Null Values</h3>
+            <p>
+                Null values were identified in the dataset. The columns with missing values include:
+            </p>
+            <ul>
+                <li><strong>workclass:</strong> 2,799 missing values</li>
+                <li><strong>occupation:</strong> 2,809 missing values</li>
+                <li><strong>native-country:</strong> 857 missing values</li>
+            </ul>
+            <p>
+                These missing values were imputed based on their data type:
+            </p>
+            <ul>
+                <li><strong>Categorical Columns:</strong> Missing values were filled with the mode (most frequent value).</li>
+                <li><strong>Numerical Columns:</strong> Missing values were filled with the median value.</li>
+            </ul>
+            <p>
+                After imputation, no null values remained in the dataset.
+            </p>
+
+            <!-- Section 1.4: Checking for Duplicate Values -->
+            <h3>1.4 Checking for Duplicate Values</h3>
+            <p>
+                The dataset contained 53 duplicate rows, which were removed to ensure data integrity. After removing duplicates, the dataset contained 48,789 rows and 14 columns.
+            </p>
+
+            <!-- Section 1.5: Dataset After Imputing and Removing Duplicates -->
+            <h3>1.5 Dataset After Imputing and Removing Duplicates</h3>
+            <p>
+                The cleaned dataset now contains 48,789 rows and 14 columns.
+            </p>
+
+            <!-- Section 1.6: Outlier Elimination -->
+            <h3>1.6 Outlier Elimination</h3>
+            <p>
+                Outliers were identified and removed using Z-scores. Columns such as <code>age</code>, <code>fnlwgt</code>, <code>capital-gain</code>, <code>capital-loss</code>, and <code>hours-per-week</code> were analyzed for outliers.
+            </p>
+            <p>
+                <strong>Outlier Removal:</strong> Rows with Z-scores greater than 3 or less than -3 were removed. After outlier elimination, the dataset contained 44,970 rows and 14 columns.
+            </p>
+            <img src="images/outliers_elimination.png" alt="Outlier Elimination Visualization">
+            <p class="caption">Figure 1: Box plots showing the distribution of numerical features before and after outlier elimination.</p>
+
+            <!-- Section 1.7: Basic Feature Engineering -->
+            <h3>1.7 Basic Feature Engineering</h3>
+            <p>
+                Several feature engineering steps were performed to improve the dataset:
+            </p>
+            <ul>
+                <li>
+                    <strong>Capital-Net:</strong> A new feature <code>capital_net</code> was created by subtracting <code>capital-loss</code> from <code>capital-gain</code>. This simplifies the model by combining two related features into one.
+                </li>
+                <li>
+                    <strong>Age Binning:</strong> The <code>age</code> column was binned into groups (e.g., 0-18, 19-25, 26-40, etc.) to capture non-linear relationships and improve interpretability.
+                </li>
+                <li>
+                    <strong>Native-Country Simplification:</strong> The <code>native-country</code> column was simplified into two categories: "US" and "Non-US" to reduce high cardinality and focus on the most relevant distinction.
+                </li>
+            </ul>
+        </section>
+    </div>
+    <div class="container">
+        <!-- Chapter 2: Exploratory Data Analysis (EDA) -->
+    <section class="section" id="chapter2">
+        <h2>Chapter 2: Exploratory Data Analysis (EDA)</h2>
+
+        <!-- Section 2.1: Summary -->
+        <h3>2.1 Summary</h3>
+
+        <!-- Subsection 2.1.1: Summary Statistics for Numeric Attributes -->
+        <h4>2.1.1 Summary Statistics for Numeric Attributes</h4>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>fnlwgt:</strong> Represents the final weight of the individual. Mean: 185,367.31, with 50% of values between 117,167.50 and 235,124.00.</li>
+            <li><strong>hours-per-week:</strong> Mean: 39.85, with 75% of individuals working 40-45 hours per week.</li>
+            <li><strong>capital_net:</strong> Mean: 555.09, but highly skewed. 75% of individuals have 0 net capital.</li>
+        </ul>
+        <p><strong>Observations:</strong></p>
+        <ul>
+            <li><strong>Skewness:</strong> <code>capital_net</code> is highly skewed, with most values at 0.</li>
+            <li><strong>Consistency:</strong> <code>hours-per-week</code> is consistent, with most people working around 40 hours.</li>
+            <li><strong>Wide Range:</strong> <code>fnlwgt</code> has a wide range, indicating significant variability.</li>
+        </ul>
+
+        <!-- Subsection 2.1.2: Summary and Count for Categorical Attributes -->
+        <h4>2.1.2 Summary and Count for Categorical Attributes</h4>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>workclass:</strong> Most individuals work in the <strong>Private</strong> sector (34,080 out of 44,970).</li>
+            <li><strong>education:</strong> Most common education level is <strong>HS-grad</strong> (14,731 individuals).</li>
+            <li><strong>marital-status:</strong> Majority are <strong>Married-civ-spouse</strong> (20,128).</li>
+            <li><strong>occupation:</strong> Most frequent occupation is <strong>Prof-specialty</strong> (8,009 individuals).</li>
+            <li><strong>income:</strong> Most individuals earn <strong><=50K</strong> (35,052).</li>
+        </ul>
+        <p><strong>Observations:</strong></p>
+        <ul>
+            <li><strong>Class Imbalance:</strong> The target variable (<code>income</code>) is imbalanced, with most individuals earning <=50K.</li>
+            <li><strong>Dominant Categories:</strong> Several features have dominant categories (e.g., "Private" in <code>workclass</code>).</li>
+        </ul>
+        <p><strong>Recommendations:</strong></p>
+        <ul>
+            <li>Use techniques like <strong>SMOTE</strong> or <strong>class weights</strong> to address class imbalance.</li>
+            <li>Use <strong>one-hot encoding</strong> for categorical variables like <code>workclass</code> and <code>education</code>.</li>
+        </ul>
+
+        <!-- Section 2.2: Univariate Analysis -->
+        <h3>2.2 Univariate Analysis</h3>
+
+        <!-- Subsection 2.2.1: Target Variable Analysis (income) -->
+        <h4>2.2.1 Target Variable Analysis (income)</h4>
+        <p><strong>Distribution:</strong></p>
+        <ul>
+            <li><strong><=50K:</strong> 35,052 individuals (77.94% of the dataset).</li>
+            <li><strong>>50K:</strong> 9,918 individuals (22.06% of the dataset).</li>
+        </ul>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>Class Imbalance:</strong> The dataset is heavily imbalanced, with 77.94% of individuals earning <=50K.</li>
+            <li><strong>Implications:</strong> Use metrics like <strong>Precision</strong>, <strong>Recall</strong>, and <strong>F1-Score</strong> to evaluate model performance.</li>
+        </ul>
+
+        <!-- Subsection 2.2.2: Distribution of Numerical Columns -->
+        <h4>2.2.2 Distribution of Numerical Columns</h4>
+        <img src="images/Num-histo.png" alt="Distribution of Numerical Columns">
+        <p class="caption">Figure 2: Histograms showing the distribution of numerical features.</p>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>fnlwgt:</strong> Most individuals clustered around 100,000 to 300,000.</li>
+            <li><strong>hours-per-week:</strong> Peaks around 40 hours, indicating a standard workweek.</li>
+            <li><strong>capital_net:</strong> Heavily skewed, with most individuals having 0 net capital.</li>
+        </ul>
+
+        <!-- Subsection 2.2.3: Distribution of Object Columns -->
+        <h4>2.2.3 Distribution of Object Columns</h4>
+        <img src="images/Bar_obj.png" alt="Distribution of Categorical Columns">
+        <p class="caption">Figure 3: Bar plots showing the distribution of categorical features.</p>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>Workclass:</strong> Private sector dominates (75.76%).</li>
+            <li><strong>Education:</strong> Most common level is <strong>HS-grad</strong> (32%).</li>
+            <li><strong>Marital Status:</strong> Majority are <strong>Married-civ-spouse</strong> (45%).</li>
+        </ul>
+
+        <!-- Section 2.3: Bivariate Analysis -->
+        <h3>2.3 Bivariate Analysis</h3>
+
+        <!-- Subsection 2.3.1: Relationship Between Income and Numerical Features -->
+        <h4>2.3.1 Relationship Between Income and Numerical Features</h4>
+        <img src="images/box_num.png" alt="Income vs Numerical Features">
+        <p class="caption">Figure 4: Box plots showing the relationship between income and numerical features.</p>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>Income vs fnlwgt:</strong> No significant difference in mean <code>fnlwgt</code> between income groups.</li>
+            <li><strong>Income vs hours-per-week:</strong> Higher income group (>50K) works more hours (median ~45 hours).</li>
+            <li><strong>Income vs capital_net:</strong> Higher income group has more significant capital gains/losses.</li>
+        </ul>
+
+        <!-- Subsection 2.3.2: Hypothesis Testing for Numerical Features -->
+        <h4>2.3.2 Hypothesis Testing for Numerical Features</h4>
+        <p><strong>Conclusions:</strong></p>
+        <ul>
+            <li><strong>fnlwgt:</strong> No significant relationship with income.</li>
+            <li><strong>hours-per-week:</strong> Significant relationship with income.</li>
+            <li><strong>capital_net:</strong> Significant relationship with income.</li>
+        </ul>
+
+        <!-- Subsection 2.3.3: Relationship Between Income and Categorical Features -->
+        <h4>2.3.3 Relationship Between Income and Categorical Features</h4>
+        <img src="images/relation.png" alt="Income vs Categorical Features">
+        <p class="caption">Figure 5: Bar plots showing the relationship between income and categorical features.</p>
+        <p><strong>Key Insights:</strong></p>
+        <ul>
+            <li><strong>Income vs Workclass:</strong> Private sector dominates both income groups.</li>
+            <li><strong>Income vs Education:</strong> Higher education levels correlate with higher income.</li>
+            <li><strong>Income vs Marital Status:</strong> Married individuals are more likely to earn >50K.</li>
+        </ul>
+
+        <!-- Subsection 2.3.4: Hypothesis Testing for Categorical Features -->
+        <h4>2.3.4 Hypothesis Testing for Categorical Features</h4>
+        <p><strong>Conclusions:</strong></p>
+        <ul>
+            <li><strong>Significant Relationships:</strong> Workclass, education, marital-status, occupation, relationship, race, native-country, and age_group.</li>
+            <li><strong>No Relationship:</strong> Gender does not significantly affect income.</li>
+        </ul>
+    </section>
+    </div>
+    <div class="container">
+    <!-- Chapter 3: Feature Engineering & Selection -->
+    <section class="section" id="chapter3">
+        <h2>Chapter 3: Feature Engineering & Selection</h2>
+
+        <!-- Section 3.1: Drop Redundant Features -->
+        <h3>3.1 Drop Redundant Features</h3>
+        <p>
+            The <code>fnlwgt</code> column was dropped as it was deemed redundant for the analysis. This feature represents the final weight of individuals in the dataset but does not contribute significantly to distinguishing income groups.
+        </p>
+
+        <!-- Section 3.2: Converting Object Columns into Category Columns -->
+        <h3>3.2 Converting Object Columns into Category Columns</h3>
+        <p>
+            The <code>education</code> and <code>age_group</code> columns were converted into categorical columns with ordered categories to preserve their inherent hierarchy.
+        </p>
+        <ul>
+            <li><strong>Education:</strong> Ordered from "Preschool" to "Doctorate".</li>
+            <li><strong>Age Group:</strong> Ordered from "0-18" to "61+".</li>
+        </ul>
+
+        <!-- Section 3.3: Standardizing Numerical Columns -->
+        <h3>3.3 Standardizing Numerical Columns</h3>
+        <p>
+            Numerical columns were standardized using <code>StandardScaler</code> to ensure all features are on the same scale. This step is crucial for algorithms sensitive to feature magnitudes, such as SVM or KNN.
+        </p>
+
+        <!-- Section 3.4: Encoding Object Columns -->
+        <h3>3.4 Encoding Object Columns</h3>
+
+        <!-- Subsection 3.4.1: Ordinal Encoding -->
+        <h4>3.4.1 Ordinal Encoding</h4>
+        <p>
+            The <code>age_group</code> and <code>education</code> columns were encoded using ordinal encoding to preserve their ordered nature. After encoding, the original columns were dropped.
+        </p>
+
+        <!-- Subsection 3.4.2: Label Encoding -->
+        <h4>3.4.2 Label Encoding</h4>
+        <p>
+            Categorical columns like <code>workclass</code>, <code>marital-status</code>, <code>occupation</code>, <code>relationship</code>, and <code>race</code> were encoded using label encoding. This converts categorical values into numerical labels.
+        </p>
+
+        <!-- Section 3.5: Handling Class Imbalance with SMOTE -->
+        <h3>3.5 Handling Class Imbalance with SMOTE</h3>
+        <p>
+            The dataset was split into training and testing sets, and SMOTE (Synthetic Minority Over-sampling Technique) was applied to the training data to address the class imbalance in the target variable (<code>income</code>).
+        </p>
+        <p><strong>Class Distribution:</strong></p>
+        <ul>
+            <li><strong>Before SMOTE:</strong> 24,536 (<=50K) vs 6,943 (>50K).</li>
+            <li><strong>After SMOTE:</strong> 24,536 (<=50K) vs 24,536 (>50K).</li>
+        </ul>
+        <img src="images/SMOTE.png" alt="Class Distribution Before and After SMOTE">
+        <p class="caption">Figure 6: Class distribution before and after applying SMOTE.</p>
+
+        <!-- Section 3.6: Feature Selection -->
+        <h3>3.6 Feature Selection</h3>
+
+        <!-- Subsection 3.6.1: Random Forest Feature Importance -->
+        <h4>3.6.1 Random Forest Feature Importance</h4>
+        <p>
+            A Random Forest model was used to determine the importance of features. The top 10 most important features were identified:
+        </p>
+        <ul>
+            <li><strong>relationship:</strong> 0.3937</li>
+            <li><strong>education_encoded:</strong> 0.1360</li>
+            <li><strong>capital_net:</strong> 0.1196</li>
+            <li><strong>hours-per-week:</strong> 0.1098</li>
+            <li><strong>occupation:</strong> 0.0824</li>
+            <li><strong>workclass:</strong> 0.0483</li>
+            <li><strong>age_group_encoded:</strong> 0.0438</li>
+            <li><strong>race:</strong> 0.0242</li>
+            <li><strong>marital-status:</strong> 0.0195</li>
+            <li><strong>native-country:</strong> 0.0138</li>
+        </ul>
+        <img src="images/feature imp.png" alt="Feature Importance from Random Forest">
+        <p class="caption">Figure 7: Feature importance scores from the Random Forest model.</p>
+
+        <!-- Subsection 3.6.2: Recursive Feature Elimination (RFE) -->
+        <h4>3.6.2 Recursive Feature Elimination (RFE)</h4>
+        <p>
+            Recursive Feature Elimination (RFE) was used to select the top 10 features. The selected features were:
+        </p>
+        <ul>
+            <li><strong>age_group_encoded</strong></li>
+            <li><strong>marital-status</strong></li>
+            <li><strong>capital_net</strong></li>
+            <li><strong>occupation</strong></li>
+            <li><strong>workclass</strong></li>
+            <li><strong>hours-per-week</strong></li>
+            <li><strong>race</strong></li>
+            <li><strong>native-country</strong></li>
+            <li><strong>relationship</strong></li>
+            <li><strong>education_encoded</strong></li>
+        </ul>
+
+        <!-- Subsection 3.6.3: Comparing Feature Selection Techniques -->
+        <h4>3.6.3 Comparing Feature Selection Techniques</h4>
+        <p>
+            The features selected by Random Forest and RFE were compared. There was a complete overlap between the two techniques, indicating consistency in feature importance.
+        </p>
+        <p><strong>Overlapping Features:</strong></p>
+        <ul>
+            <li><strong>age_group_encoded</strong></li>
+            <li><strong>marital-status</strong></li>
+            <li><strong>capital_net</strong></li>
+            <li><strong>occupation</strong></li>
+            <li><strong>workclass</strong></li>
+            <li><strong>hours-per-week</strong></li>
+            <li><strong>race</strong></li>
+            <li><strong>native-country</strong></li>
+            <li><strong>relationship</strong></li>
+            <li><strong>education_encoded</strong></li>
+        </ul>
+    </section>
+    </div>  
+    <div class="container">
+                <!-- Chapter 4: Model Building -->
+        <section class="section" id="chapter4">
+            <h2>Chapter 4: Model Building</h2>
+
+            <!-- Section 4.1: Model Performance -->
+            <h3>4.1 Model Performance</h3>
+            <p>
+                Several machine learning models were trained and evaluated to predict income levels. Below is a summary of their performance:
+            </p>
+
+            <!-- Subsection 4.1.1: Logistic Regression -->
+            <h4>Logistic Regression</h4>
+            <p><strong>Accuracy:</strong> 71.87%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                        precision    recall  f1-score   support
+
+                    0       0.92      0.70      0.79     10516
+                    1       0.43      0.79      0.55      2975
+
+            accuracy                            0.72     13491
+            macro avg       0.67      0.74      0.67     13491
+            weighted avg    0.81      0.72      0.74     13491
+            </pre>
+
+            <!-- Subsection 4.1.2: Random Forest Classifier -->
+            <h4>Random Forest Classifier</h4>
+            <p><strong>Accuracy:</strong> 81.48%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                        precision    recall  f1-score   support
+
+                    0       0.92      0.83      0.88     10516
+                    1       0.56      0.74      0.64      2975
+
+            accuracy                            0.81     13491
+            macro avg       0.74      0.79      0.76     13491
+            weighted avg    0.84      0.81      0.82     13491
+            </pre>
+
+            <!-- Subsection 4.1.3: Decision Tree Classifier -->
+            <h4>Decision Tree Classifier</h4>
+            <p><strong>Accuracy:</strong> 80.35%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                        precision    recall  f1-score   support
+
+                    0       0.91      0.83      0.87     10516
+                    1       0.54      0.72      0.62      2975
+
+            accuracy                            0.80     13491
+            macro avg       0.73      0.77      0.74     13491
+            weighted avg    0.83      0.80      0.81     13491
+            </pre>
+
+            <!-- Subsection 4.1.4: Gradient Boosting Classifier -->
+            <h4>Gradient Boosting Classifier</h4>
+            <p><strong>Accuracy:</strong> 80.70%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                    precision    recall  f1-score   support
+
+                    0       0.95      0.79      0.87     10516
+                    1       0.54      0.85      0.66      2975
+
+            accuracy                            0.81     13491
+            macro avg       0.74      0.82      0.76     13491
+            weighted avg    0.86      0.81      0.82     13491
+            </pre>
+
+            <!-- Subsection 4.1.5: XGB Classifier -->
+            <h4>XGB Classifier</h4>
+            <p><strong>Accuracy:</strong> 81.90%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                        precision    recall  f1-score   support
+
+                    0       0.94      0.82      0.88     10516
+                    1       0.56      0.83      0.67      2975
+
+            accuracy                            0.82     13491
+            macro avg       0.75      0.82      0.77     13491
+            weighted avg    0.86      0.82      0.83     13491
+            </pre>
+
+            <!-- Subsection 4.1.6: XGB RF Classifier -->
+            <h4>XGB RF Classifier</h4>
+            <p><strong>Accuracy:</strong> 77.39%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                        precision    recall  f1-score   support
+
+                    0       0.96      0.74      0.84     10516
+                    1       0.49      0.89      0.64      2975
+
+            accuracy                            0.77     13491
+            macro avg       0.73      0.82      0.74     13491
+            weighted avg    0.86      0.77      0.79     13491
+            </pre>
+
+            <!-- Section 4.2: Model Performance Summary -->
+            <h3>4.2 Model Performance Summary</h3>
+            <p>
+                The table below summarizes the performance of all models:
+            </p>
+            <img src="images/models mat.png" alt="Model Performance Summary">
+            <p class="caption">Figure 8: Summary of model performance metrics.</p>
+
+            <!-- Section 4.3: Observations and Inference -->
+            <h3>4.3 Observations and Inference</h3>
+            <p><strong>Key Observations:</strong></p>
+            <ul>
+                <li><strong>Logistic Regression:</strong> Lowest accuracy (71.87%), high precision for class 0 but low recall for class 1.</li>
+                <li><strong>Ensemble Models (Random Forest, Gradient Boosting, XGB_Classifier):</strong> Achieved accuracies around 81–82%, with better balance between precision and recall.</li>
+                <li><strong>XGB_Classifier:</strong> Slightly outperforms other models with ~81.90% accuracy and consistent performance for both classes.</li>
+                <li><strong>XGB_RF_Classifier:</strong> Lower accuracy (77.39%), despite high recall for class 1, indicating possible overfitting to the minority class.</li>
+            </ul>
+            <p><strong>Inference:</strong></p>
+            <p>
+                Ensemble methods, particularly <strong>XGB_Classifier</strong> and <strong>Random Forest</strong>, provide a significant improvement over the baseline Logistic Regression, making them preferable choices for this dataset.
+            </p>
+        </section>
+    </div>
+    <div class="container">
+        <!-- Chapter 5: Model Tuning for XGB_Classifier using GridSearchCV -->
+        <section class="section" id="chapter5">
+            <h2>Chapter 5: Model Tuning for XGB_Classifier using GridSearchCV</h2>
+
+            <!-- Section 5.1: Hyperparameter Tuning -->
+            <h3>5.1 Hyperparameter Tuning</h3>
+            <p>
+                To improve the performance of the <strong>XGB_Classifier</strong>, hyperparameter tuning was performed using <strong>GridSearchCV</strong>. The goal was to find the optimal combination of hyperparameters to maximize the F1-score.
+            </p>
+            <p><strong>Process:</strong></p>
+            <ul>
+                <li><strong>GridSearchCV:</strong> 3-fold cross-validation was used to evaluate 2,187 hyperparameter combinations.</li>
+                <li><strong>Total Fits:</strong> 6,561 model fits were performed to identify the best parameters.</li>
+            </ul>
+
+            <!-- Section 5.2: Best Parameters and Results -->
+            <h3>5.2 Best Parameters and Results</h3>
+            <p>
+                The best hyperparameters and corresponding F1-score are as follows:
+            </p>
+            <pre>
+        Best Parameters: {
+            'colsample_bytree': 1.0,
+            'gamma': 0,
+            'learning_rate': 0.2,
+            'max_depth': 7,
+            'min_child_weight': 1,
+            'n_estimators': 200,
+            'subsample': 0.8
+        }
+        Best F1-Score: 0.8631670618923626
+            </pre>
+            <p><strong>Key Insights:</strong></p>
+            <ul>
+                <li><strong>Learning Rate:</strong> A moderate learning rate of 0.2 was found to be optimal.</li>
+                <li><strong>Max Depth:</strong> A maximum tree depth of 7 provided the best balance between bias and variance.</li>
+                <li><strong>N_Estimators:</strong> 200 trees were sufficient to achieve high performance.</li>
+                <li><strong>Subsample:</strong> Using 80% of the data for each tree (subsample = 0.8) helped prevent overfitting.</li>
+            </ul>
+
+            <!-- Section 5.3: Observations and Recommendations -->
+            <h3>5.3 Observations and Recommendations</h3>
+            <p><strong>Observations:</strong></p>
+            <ul>
+                <li>The tuned <strong>XGB_Classifier</strong> achieved an F1-score of <strong>0.863</strong>, indicating a significant improvement over the baseline model.</li>
+                <li>Hyperparameter tuning helped optimize the model's performance, particularly in balancing precision and recall for the minority class.</li>
+            </ul>
+            <p><strong>Recommendations:</strong></p>
+            <ul>
+                <li><strong>Deploy the Tuned Model:</strong> The tuned <strong>XGB_Classifier</strong> should be deployed for predictions due to its superior performance.</li>
+                <li><strong>Monitor Performance:</strong> Continuously monitor the model's performance in production to ensure it generalizes well to new data.</li>
+                <li><strong>Further Optimization:</strong> Explore additional techniques like Bayesian Optimization or RandomizedSearchCV for faster hyperparameter tuning.</li>
+            </ul>
+        </section>
+    </div>
+    <div class="container">
+                <!-- Chapter 6: Model Evaluation -->
+        <section class="section" id="chapter6">
+            <h2>Chapter 6: Model Evaluation</h2>
+
+            <!-- Section 6.1: Model Performance -->
+            <h3>6.1 Model Performance</h3>
+            <p>
+                The <strong>XGB_Classifier</strong> was evaluated on the test dataset after hyperparameter tuning. Below are the performance metrics:
+            </p>
+            <p><strong>Accuracy:</strong> 81.96%</p>
+            <p><strong>Classification Report:</strong></p>
+            <pre>
+                        precision    recall  f1-score   support
+
+                    0       0.94      0.82      0.88     10516
+                    1       0.56      0.81      0.66      2975
+
+            accuracy                            0.82     13491
+            macro avg       0.75      0.82      0.77     13491
+            weighted avg    0.86      0.82      0.83     13491
+            </pre>
+
+            <!-- Section 6.2: Model Performance Summary -->
+            <h3>6.2 Model Performance Summary</h3>
+            <p>
+                The table below summarizes the performance of the <strong>XGB_Classifier</strong>:
+            </p>
+            <img src="images/xgb.png" alt="Model Performance Summary">
+            <p class="caption">Figure 9: Summary of model performance metrics.</p>
+
+            <!-- Section 6.3: Confusion Matrix Analysis -->
+            <h3>6.3 Confusion Matrix Analysis</h3>
+            <p>
+                The confusion matrix for the hyperparameter-tuned <strong>XGBoost Classifier</strong> is as follows:
+            </p>
+            <img src="images/confusion.png" alt="Confusion Matrix Heatmap">
+            <p class="caption">Figure 10: Confusion matrix heatmap for the XGBoost Classifier.</p>
+
+            <!-- Subsection 6.3.1: Confusion Matrix Breakdown -->
+            <h4>6.3.1 Confusion Matrix Breakdown</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actual \ Predicted</th>
+                        <th>0 (Negative)</th>
+                        <th>1 (Positive)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>0 (Negative)</strong></td>
+                        <td>8645</td>
+                        <td>1871</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1 (Positive)</strong></td>
+                        <td>563</td>
+                        <td>2412</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Subsection 6.3.2: Key Observations -->
+            <h4>6.3.2 Key Observations</h4>
+            <ul>
+                <li><strong>True Negatives (TN):</strong> 8645 - The model correctly identified 8645 negative cases.</li>
+                <li><strong>False Positives (FP):</strong> 1871 - 1871 negative cases were misclassified as positive.</li>
+                <li><strong>False Negatives (FN):</strong> 563 - 563 positive cases were misclassified as negative.</li>
+                <li><strong>True Positives (TP):</strong> 2412 - The model correctly identified 2412 positive cases.</li>
+            </ul>
+
+            <!-- Subsection 6.3.3: Inference -->
+            <h4>6.3.3 Inference</h4>
+            <ul>
+                <li>The <strong>accuracy (82%)</strong> indicates a fairly well-performing model.</li>
+                <li>The <strong>recall (81%)</strong> suggests that the model effectively identifies most of the positive cases.</li>
+                <li>The <strong>precision (56%)</strong> is lower, meaning there are more false positives, which could be problematic if false alarms are costly.</li>
+                <li>The <strong>F1 Score (0.66)</strong> is a balance between precision and recall, indicating reasonable overall performance.</li>
+            </ul>
+        </section>
+        </div>
+        <div class="container">
+        <!-- Chapter 7: Conclusion -->
+        <section class="section" id="chapter7">
+            <h2>Chapter 7: Conclusion</h2>
+            <p>
+                The hyperparameter-tuned <strong>XGBoost Classifier</strong> is the best-performing model for the Census Income Classification task, achieving an accuracy of <strong>81.96%</strong> with a balanced performance across both classes.
+            </p>
+            <p>
+                The project effectively addressed key challenges such as class imbalance and feature selection, leading to an overall robust model. Future work can focus on further improving precision for the minority class, refining feature engineering, and deploying the model for real-world use.
+            </p>
+            <p>
+                This project demonstrates the importance of a structured approach to machine learning—including data cleaning, feature engineering, class imbalance handling, and hyperparameter tuning. By iteratively optimizing each step, we achieved a reliable model for income classification.
+            </p>
+        </section>
+</div>
+
+</body>
+</html>

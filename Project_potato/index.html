@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Potato Disease Classification Using Deep Learning</title>
+  <style>
+    /* CSS Code */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      color: #4CAF50;
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      color: #333;
+    }
+
+    ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+
+    figure {
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    figcaption {
+      font-style: italic;
+      color: #555;
+      margin-top: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      background: #4CAF50;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Potato Disease Classification Using Deep Learning</h1>
+  </header>
+
+  <main>
+    <!-- Project Overview -->
+    <section>
+      <h2>Project Overview</h2>
+      <p>
+        The goal of this project is to develop an automated system for classifying potato leaf diseases using deep learning. Potato plants are susceptible to diseases like <strong>Early Blight</strong> and <strong>Late Blight</strong>, which can significantly impact crop yield and quality. Early detection of these diseases is crucial for farmers to take timely action and minimize losses. This project leverages <strong>Convolutional Neural Networks (CNNs)</strong> to classify potato leaf images into three categories:
+      </p>
+      <ul>
+        <li>Early Blight</li>
+        <li>Late Blight</li>
+        <li>Healthy</li>
+      </ul>
+      <p>
+        The model is trained on the <strong>PlantVillage dataset</strong>, which contains labeled images of potato leaves affected by these diseases. The final model can be deployed as a <strong>web application</strong> to assist farmers in identifying diseases quickly and accurately.
+      </p>
+    </section>
+
+    <!-- Key Features -->
+    <section>
+      <h2>Key Features</h2>
+      <ul>
+        <li><strong>Automated Disease Detection</strong>: The system eliminates the need for manual inspection, saving time and reducing reliance on expert knowledge.</li>
+        <li><strong>High Accuracy</strong>: The CNN model achieves an accuracy of <strong>95.83%</strong> on the test dataset.</li>
+        <li><strong>User-Friendly Web Application</strong>: A <strong>Streamlit-based web app</strong> allows users to upload images and receive predictions with confidence scores.</li>
+        <li><strong>Data Augmentation</strong>: Techniques like rotation, flipping, and zooming are used to enhance the dataset and improve model generalization.</li>
+      </ul>
+    </section>
+
+    <!-- Technologies Used -->
+    <section>
+      <h2>Technologies Used</h2>
+      <ul>
+        <li><strong>Programming Language</strong>: Python</li>
+        <li><strong>Libraries/Frameworks</strong>:
+          <ul>
+            <li>TensorFlow, Keras (for building and training the CNN model)</li>
+            <li>NumPy, Pandas (for data manipulation)</li>
+            <li>Matplotlib, Seaborn (for visualization)</li>
+            <li>Scikit-learn (for evaluation metrics)</li>
+            <li>Streamlit (for web app development)</li>
+          </ul>
+        </li>
+        <li><strong>Dataset</strong>: 
+          <ul>
+            <li>PlantVillage dataset (publicly available dataset for plant disease classification)</li>
+            <li>Downloaded from <a href="https://www.kaggle.com/datasets/faysalmiah1721758/potato-dataset" target="_blank">Kaggle</a></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Methodology -->
+    <section>
+      <h2>Methodology</h2>
+      <h3>1. Data Preprocessing</h3>
+      <p>
+        The dataset consists of <strong>2,152 images</strong> of potato leaves, divided into three classes: Early Blight, Late Blight, and Healthy. <strong>ImageDataGenerator</strong> is used to preprocess and augment the data. Techniques like rescaling, rotation, flipping, and zooming are applied to improve model robustness. The dataset is split into:
+      </p>
+      <ul>
+        <li><strong>Training set (70%)</strong></li>
+        <li><strong>Validation set (20%)</strong></li>
+        <li><strong>Test set (10%)</strong></li>
+      </ul>
+      <figure>
+        <img src="images/Aug_images.png" alt="Augmented Images">
+        <figcaption>Figure 1: Sample of augmented potato leaf images showing rotation, flipping, and zooming.</figcaption>
+      </figure>
+
+      <h3>2. Model Architecture</h3>
+      <p>
+        A <strong>Convolutional Neural Network (CNN)</strong> is designed with multiple Conv2D layers, MaxPooling2D layers, and fully connected layers. The model summary is shown below:
+      </p>
+      <figure>
+        <img src="images/model_summary.png" alt="Model Summary">
+        <figcaption>Figure 2: Summary of the CNN architecture used for potato disease classification.</figcaption>
+      </figure>
+
+      <h3>3. Model Training</h3>
+      <p>
+        The model is trained for <strong>50 epochs</strong> using the <strong>Adam optimizer</strong> and <strong>Sparse Categorical Crossentropy</strong> loss function. Training and validation accuracy/loss are monitored to ensure the model is learning effectively.
+      </p>
+      <figure>
+        <img src="images/Plot_traing_val_acc_loss.png" alt="Training Curves">
+        <figcaption>Figure 3: Training and validation accuracy/loss curves over 50 epochs.</figcaption>
+      </figure>
+
+      <h3>4. Model Evaluation</h3>
+      <p>
+        The model is evaluated on the test set, achieving a <strong>test accuracy of 95.83%</strong>. A confusion matrix and classification report are generated to analyze performance.
+      </p>
+      <figure>
+        <img src="images/confusion_matrix.png" alt="Confusion Matrix">
+        <figcaption>Figure 4: Confusion matrix showing model performance on the test set.</figcaption>
+      </figure>
+
+      <h3>5. Web Application</h3>
+      <p>
+        A <strong>Streamlit-based web app</strong> is developed to allow users to upload potato leaf images and receive predictions. The app displays the uploaded image, predicted class, and confidence score.
+      </p>
+      <figure>
+        <img src="images/web_app_interface.png" alt="Web App Interface">
+        <figcaption>Figure 5: Screenshot of the Streamlit web app interface for potato disease classification.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Results and Insights -->
+    <section>
+      <h2>Results and Insights</h2>
+      <p>
+        The model performs exceptionally well, with high accuracy and robust generalization. Early Blight and Late Blight are classified with <strong>99% precision and recall</strong>, while Healthy leaves are classified with <strong>93% precision and recall</strong>. The web app provides a practical tool for farmers to detect diseases early and take preventive measures.
+      </p>
+    </section>
+
+    <!-- Future Improvements -->
+    <section>
+      <h2>Future Improvements</h2>
+      <ul>
+        <li><strong>Expand Dataset</strong>: Include more diverse images to improve model generalization.</li>
+        <li><strong>Deploy on Mobile</strong>: Develop a mobile app for easier access in rural areas.</li>
+        <li><strong>Multi-Crop Support</strong>: Extend the model to classify diseases in other crops.</li>
+      </ul>
+    </section>
+
+    <!-- Conclusion -->
+    <section>
+      <h2>Conclusion</h2>
+      <p>
+        This project demonstrates the power of deep learning in agriculture, specifically for disease detection in potato plants. By automating the classification process, farmers can save time, reduce crop losses, and improve yields. The high accuracy and user-friendly web app make this solution practical and impactful.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p> </p>
+  </footer>
+</body>
+</html>

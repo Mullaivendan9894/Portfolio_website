@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Movie Recommendation System</title>
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #e50914;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        h2, h3 {
+            color: #e50914;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        figure {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        figcaption {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #e50914;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #e50914;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        blockquote {
+            background-color: #f9f9f9;
+            border-left: 5px solid #e50914;
+            margin: 20px 0;
+            padding: 10px 20px;
+            font-style: italic;
+            color: #555;
+        }
+
+        blockquote ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Netflix Movie Recommendation System</h1>
+    </header>
+
+    <section id="overview">
+        <h2>Project Overview</h2>
+        <p>
+            The goal of this project is to build a <strong>movie recommendation system</strong> for Netflix users using historical ratings data. The system leverages two key techniques:
+        </p>
+        <ul>
+            <li><strong>Collaborative Filtering</strong> (using Singular Value Decomposition - SVD) to predict user ratings for movies they haven't seen.</li>
+            <li><strong>Content-Based Filtering</strong> (using Pearson Correlation) to recommend movies similar to those a user has already rated highly.</li>
+        </ul>
+        <p>
+            The system aims to improve user engagement by providing personalized movie suggestions, helping users discover content they are likely to enjoy.
+        </p>
+    </section>
+
+    <section id="problem">
+        <h2>Problem Description</h2>
+        <p>
+            Netflix, like many streaming platforms, faces the challenge of delivering personalized recommendations to its vast user base. With millions of movies and shows available, users often struggle to find content that aligns with their preferences. This project addresses this challenge by building a recommendation system that predicts user preferences based on historical ratings and suggests movies that are most likely to match their tastes.
+        </p>
+    </section>
+
+    <section id="dataset">
+        <h2>Dataset</h2>
+        <p>
+            The dataset used in this project is the <strong>Netflix Prize Dataset</strong>, which is publicly available on <a href="https://www.kaggle.com/datasets/netflix-inc/netflix-prize-data" target="_blank">Kaggle</a>. This dataset contains over <strong>100 million ratings</strong> from more than <strong>480,000 users</strong> for <strong>17,770 movies</strong>. The data spans from 1999 to 2005 and includes:
+        </p>
+        <ul>
+            <li><strong>User IDs</strong>: Unique identifiers for each user.</li>
+            <li><strong>Movie IDs</strong>: Unique identifiers for each movie.</li>
+            <li><strong>Ratings</strong>: Ratings on a scale of 1 to 5.</li>
+            <li><strong>Timestamps</strong>: The date and time of each rating.</li>
+        </ul>
+        <p>
+            The dataset is divided into multiple files, with the primary file used in this project being <code>combined_data_1.txt</code>.
+        </p>
+    </section>
+
+    <section id="features">
+        <h2>Key Features</h2>
+        <ul>
+            <li>
+                <strong>Collaborative Filtering (SVD)</strong>:
+                <ul>
+                    <li>Predicts ratings for movies a user hasn't seen based on the preferences of similar users.</li>
+                    <li>Uses Singular Value Decomposition (SVD) to identify latent factors in the data.</li>
+                    <li>Evaluated using cross-validation and metrics like RMSE (Root Mean Squared Error) and MAE (Mean Absolute Error).</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Content-Based Filtering (Pearson Correlation)</strong>:
+                <ul>
+                    <li>Recommends movies similar to those a user has rated highly.</li>
+                    <li>Uses Pearson Correlation to measure similarity between movies based on user ratings.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Data Preprocessing</strong>:
+                <ul>
+                    <li>Cleans the dataset by removing low-rated movies and inactive users.</li>
+                    <li>Ensures the dataset contains only high-quality data for accurate recommendations.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Personalized Recommendations</strong>:
+                <ul>
+                    <li>Provides a list of top 10 recommended movies for a specific user or based on a target movie.</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <section id="technologies">
+        <h2>Technologies and Tools</h2>
+        <ul>
+            <li><strong>Programming Language</strong>: Python</li>
+            <li>
+                <strong>Libraries</strong>:
+                <ul>
+                    <li>Pandas, NumPy, Matplotlib, Seaborn (for data manipulation and visualization).</li>
+                    <li>Surprise (for collaborative filtering and SVD implementation).</li>
+                    <li>Scipy (for Pearson Correlation).</li>
+                </ul>
+            </li>
+            <li><strong>Data Storage</strong>: CSV files for movie titles and ratings.</li>
+            <li><strong>Model Persistence</strong>: Pickle for saving and loading the trained SVD model.</li>
+        </ul>
+    </section>
+
+    <section id="methodology">
+        <h2>Methodology</h2>
+        <h3>1. Data Loading and Inspection</h3>
+        <p>
+            The dataset contains over <strong>24 million rows</strong> of user ratings for movies. The initial steps involve:
+        </p>
+        <ul>
+            <li>Loading the dataset.</li>
+            <li>Inspecting the data types and structure.</li>
+            <li>Visualizing the distribution of ratings to understand user behavior.</li>
+        </ul>
+        <figure>
+            <img src="images/rating.png" alt="Rating Distribution Bar Chart">
+            <figcaption>Figure 1: Bar chart showing the distribution of ratings (1-star to 5-star).</figcaption>
+        </figure>
+        <blockquote>
+            <p><strong>Key Insights:</strong></p>
+            <ul>
+                <li><strong>Highest Reviews at 4-star:</strong> The bar for the 4-star rating has the highest number of reviews, with over 8 million reviews. This suggests that a large portion of the movies in the dataset have been well-received by customers, earning high ratings.</li>
+                <li><strong>Substantial 5-star Reviews:</strong> The 5-star rating bar shows the second-highest number of reviews, with over 5.5 million. This indicates that a significant number of movies have received excellent customer feedback.</li>
+                <li><strong>Fewer Low-rated Movies:</strong> The 1-star and 2-star rating bars have the lowest number of reviews, around 1.1 million and 2.4 million, respectively. This implies that the dataset contains fewer movies that have been poorly rated by customers.</li>
+                <li><strong>Large Customer Base:</strong> With 475,257 customers providing a total of 24,053,764 reviews, this dataset represents a substantial user base engaging with the movies.</li>
+            </ul>
+        </blockquote>
+
+        <h3>2. Data Cleaning</h3>
+        <p>
+            To ensure the dataset is suitable for modeling, the following cleaning steps are performed:
+        </p>
+        <ul>
+            <li><strong>Extract Movie IDs</strong>: Separate movie IDs from the combined dataset.</li>
+            <li><strong>Remove Null Values</strong>: Filter out rows with missing ratings.</li>
+            <li><strong>Remove Low-Rated Movies and Inactive Users</strong>: Drop movies and users with fewer ratings than a specified threshold (60th percentile).</li>
+        </ul>
+
+        <h3>3. Collaborative Filtering with SVD</h3>
+        <p>
+            The SVD model is initialized and evaluated using 5-fold cross-validation. The model achieves an RMSE of <strong>1.018</strong> and MAE of <strong>0.814</strong>, indicating good predictive accuracy. After validation, the model is trained on the full dataset to make personalized predictions.
+        </p>
+        <figure>
+            <img src="images/rmse.png" alt="Cross-Validation Results">
+            <figcaption>Figure 2: Cross-validation results showing RMSE and MAE for each fold.</figcaption>
+        </figure>
+
+        <h3>4. Content-Based Filtering with Pearson Correlation</h3>
+        <p>
+            A pivot table is created to represent user ratings for each movie. Pearson Correlation is used to calculate similarity between movies based on user ratings. A function is implemented to recommend the top 10 movies similar to a given movie.
+        </p>
+        <figure>
+            <img src="images/top_10_x-men.png" alt="Top 10 Recommendations">
+            <figcaption>Figure 3: Top 10 movies similar to 'X-Men United'.</figcaption>
+        </figure>
+
+        <h3>5. Model Persistence</h3>
+        <p>
+            The trained SVD model is saved using <strong>Pickle</strong> for future use. The model can be loaded to make predictions for new users or movies.
+        </p>
+    </section>
+
+    <section id="results">
+        <h2>Results and Insights</h2>
+        <p>
+            The system successfully predicts user ratings and recommends movies based on both collaborative and content-based filtering. Collaborative Filtering excels at identifying latent patterns in user preferences, while Content-Based Filtering provides direct recommendations based on movie similarity. The combination of these techniques ensures a diverse yet relevant set of recommendations.
+        </p>
+        <figure>
+            <img src="images/movie_user_712664.png" alt="Top 10 Recommendations for User">
+            <figcaption>Figure 4: Top 10 movies recommended for User 712664.</figcaption>
+        </figure>
+    </section>
+
+    <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>
+            This project demonstrates the power of combining <strong>collaborative filtering</strong> and <strong>content-based filtering</strong> to build a robust recommendation system. By leveraging historical ratings data from the <strong>Netflix Prize Dataset</strong> on Kaggle, the system provides personalized movie suggestions that enhance user engagement and satisfaction. The use of SVD and Pearson Correlation ensures that the recommendations are both accurate and relevant, making it a valuable tool for platforms like Netflix.
+        </p>
+    </section>
+
+    <footer>
+        <p> </p>
+    </footer>
+</body>
+</html>
